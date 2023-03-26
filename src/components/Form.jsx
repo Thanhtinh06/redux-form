@@ -14,19 +14,22 @@ class Form extends Component {
     this.handlerSubmit = this.handlerSubmit.bind(this);
   }
   
-  resetForm() {
+  resetForm(isEdit = false) {
     this.setState({
       code: "",
       fullName: "",
       email: "",
       phone: "",
     });
+    if (!isEdit) {
+      this.submitBtn.innerText = "Thêm học sinh";
+    }
   }
   
   handlerSubmit(e) {
     e.preventDefault();
     this.props.onSubmit(this.state);
-    this.resetForm();
+    this.resetForm(this.props.editStudent);
   }
 
   handleOnchange = (e) => {
@@ -37,21 +40,18 @@ class Form extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    if (this.props.editStudent !== prevProps.editStudent) {
+    if (prevProps.editStudent !== this.props.editStudent) {
       if (this.props.editStudent) {
         this.setState({
           ...this.props.editStudent,
         });
+        this.submitBtn.innerText = "Cập nhật học sinh";
       } else {
-        this.setState({
-          code: "",
-          fullName: "",
-          email: "",
-          phone: "",
-        });
+        this.resetForm();
       }
     }
   }
+
   
   render() {
     return (
@@ -112,8 +112,8 @@ class Form extends Component {
             />
           </div>
           <div className="col-12">
-            <button type="submit" className="btn btn-success">
-              {this.props.editStudent ? "Cập nhật học sinh" : "Thêm học sinh"}
+            <button type="submit" className="btn btn-success" ref={(el) => (this.submitBtn = el)}> 
+            {this.props.editStudent ? "Cập nhật học sinh" : "Thêm học sinh"}
             </button>
           </div>
         </form>

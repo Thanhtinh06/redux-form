@@ -28,14 +28,18 @@ export const reducerForm = (state = initialState, action) => {
 
     case SUBMIT_STUDENT:
       let listStudentNew = [...state.listStudent];
-      const index = listStudentNew.findIndex(
-        (student) => student.code === action.student.code
-      );
-      if (index !== -1) {
-        listStudentNew[index] = action.student;
-      } else {
+     
+      if(action.student.code){
+        const index = listStudentNew.findIndex(
+          (student) => student.code === action.student.code
+        );
+        if (index !== -1) {
+          listStudentNew[index] = action.student;
+        }
+      }else{
         listStudentNew.push(action.student);
       }
+
       return { ...state, listStudent: listStudentNew };
 
     case REMOVE_STUDENT:
@@ -53,9 +57,9 @@ export const reducerForm = (state = initialState, action) => {
       return { ...state, editStudent: editStudentNew };
 
     case SEARCH_STUDENT:
-      let keywordNew = action.payload;
+      let keywordNew = action.student;
       return { ...state, keyword: keywordNew };
-      
+
     default:
       return { ...state };
   }
