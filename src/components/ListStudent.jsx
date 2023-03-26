@@ -15,21 +15,25 @@ class ListStudent extends Component {
     });
   }
   render() {
-    return (
-      <table className="table table-striped text-center container">
-        <thead className="table-dark">
-          <tr>
-            <th>Mã SV</th>
-            <th>Họ tên</th>
-            <th>Email</th>
-            <th>Số điện thoại</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>{this.renderListStudent()}</tbody>
-      </table>
-    );
+    if(this.props.listStudent.length > 0){
+      return (
+        <table className="table table-striped text-center container">
+          <thead className="table-dark">
+            <tr>
+              <th>Mã SV</th>
+              <th>Họ tên</th>
+              <th>Email</th>
+              <th>Số điện thoại</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>{this.renderListStudent()}</tbody>
+        </table>
+      );
+    } else {
+      return <p className="text-center mt-5">Chưa có học sinh trong danh sách</p>
+    }
   }
 }
 

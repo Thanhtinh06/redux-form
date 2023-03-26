@@ -6,18 +6,6 @@ import {
 } from "./type";
 const initialState = {
   listStudent: [
-    {
-      code: 1,
-      fullName: "Thanh Tinh",
-      email: "thanhtinh@gmail.com",
-      phone: "0943165280",
-    },
-    {
-      code: 2,
-      fullName: "Ky Duong",
-      email: "kyduong@gmail.com",
-      phone: "0943165213",
-    },
   ],
   editStudent: null,
   keyword: "",
@@ -28,18 +16,14 @@ export const reducerForm = (state = initialState, action) => {
 
     case SUBMIT_STUDENT:
       let listStudentNew = [...state.listStudent];
-     
-      if(action.student.code){
-        const index = listStudentNew.findIndex(
-          (student) => student.code === action.student.code
-        );
-        if (index !== -1) {
-          listStudentNew[index] = action.student;
-        }
-      }else{
+      const index = listStudentNew.findIndex(
+        (student) => student.code === action.student.code
+      );
+      if (index !== -1) {
+        listStudentNew[index] = action.student;
+      } else {
         listStudentNew.push(action.student);
       }
-
       return { ...state, listStudent: listStudentNew };
 
     case REMOVE_STUDENT:

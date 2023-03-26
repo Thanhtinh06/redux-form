@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { actAddStudent } from "./duck/action";
+import { actAddStudent, actEditStudent } from "./duck/action";
 
 class Form extends Component {
   constructor(props) {
@@ -14,22 +14,20 @@ class Form extends Component {
     this.handlerSubmit = this.handlerSubmit.bind(this);
   }
   
-  resetForm(isEdit = false) {
+  resetForm() {
     this.setState({
       code: "",
       fullName: "",
       email: "",
       phone: "",
     });
-    if (!isEdit) {
-      this.submitBtn.innerText = "Thêm học sinh";
-    }
+
   }
   
   handlerSubmit(e) {
     e.preventDefault();
     this.props.onSubmit(this.state);
-    this.resetForm(this.props.editStudent);
+    this.resetForm();
   }
 
   handleOnchange = (e) => {
@@ -40,18 +38,21 @@ class Form extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    if (prevProps.editStudent !== this.props.editStudent) {
+    if (this.props.editStudent !== prevProps.editStudent) {
       if (this.props.editStudent) {
         this.setState({
           ...this.props.editStudent,
         });
-        this.submitBtn.innerText = "Cập nhật học sinh";
       } else {
-        this.resetForm();
+        this.setState({
+          code: "",
+          fullName: "",
+          email: "",
+          phone: "",
+        });
       }
     }
   }
-
   
   render() {
     return (
@@ -112,8 +113,8 @@ class Form extends Component {
             />
           </div>
           <div className="col-12">
-            <button type="submit" className="btn btn-success" ref={(el) => (this.submitBtn = el)}> 
-            {this.props.editStudent ? "Cập nhật học sinh" : "Thêm học sinh"}
+            <button type="submit" className="btn btn-success">
+              {this.props.editStudent ? "Cập nhật học sinh" : "Thêm học sinh"}
             </button>
           </div>
         </form>
@@ -132,6 +133,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onSubmit: (student) => {
       dispatch(actAddStudent(student));
+      dispatch(actEditStudent(null));
     },
   };
 };
